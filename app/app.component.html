@@ -1,0 +1,56 @@
+<!-- <ngx-datatable
+  [rows]="rows"
+  [columns]="[]"
+  [headerHeight]="50"
+  [rowHeight]="'auto'"
+  [columnMode]="'force'">
+  <ngx-datatable-column *ngFor="let col of columns" [name]="col.name">
+    <ng-template ngx-datatable-cell-template let-row="row">
+      <div *ngIf="row[col.prop].length > col.maxLength">
+        <span *ngIf="!expandedCells[row.id]">
+          {{ row[col.prop] | slice:0:col.maxLength }}...
+          <a href="javascript:void(0)" (click)="toggleView(row.id)">Ver más</a>
+        </span>
+        <span *ngIf="expandedCells[row.id]">
+          {{ row[col.prop] }}
+          <a href="javascript:void(0)" (click)="toggleView(row.id)">Ver menos</a>
+        </span>
+      </div>
+      <div *ngIf="!(row[col.prop].length > col.maxLength)">
+        {{row[col.prop].length}} {{ row[col.prop] }}
+      </div>
+    </ng-template>
+  </ngx-datatable-column>
+</ngx-datatable> -->
+
+<ngx-datatable
+  [rows]="rows"
+  [columns]="[]"
+  [headerHeight]="50"
+  [rowHeight]="'auto'"
+  [columnMode]="'force'"
+>
+  <ngx-datatable-column *ngFor="let columna of columns" [name]="columna.name">
+    <ng-template ngx-datatable-cell-template let-row="row">
+      <div
+        *ngIf="columna.truncate"
+        #expandable="appExpandableCell"
+        [appExpandableCell]="columna.maxLength"
+        [originalText]="row[columna.prop]"
+      >
+        {{ expandable.expanded ? row[columna.prop] : expandable.truncatedText }}...
+
+        <a
+          *ngIf="expandable.exceedsLimit"
+          href="javascript:void(0)"
+          (click)="expandable.toggle()"
+        >
+         <br>  {{ 'Ver ' + (expandable.expanded ? 'menos' : 'más') }}</a
+        >
+      </div>
+      <div *ngIf="!columna.truncate">
+        {{ row[columna.prop] }}
+      </div>
+    </ng-template>
+  </ngx-datatable-column>
+</ngx-datatable>
